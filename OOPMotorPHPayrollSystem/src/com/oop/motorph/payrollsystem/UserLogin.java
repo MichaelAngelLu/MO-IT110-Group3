@@ -41,9 +41,6 @@ public class UserLogin extends Employee {
 	        for (int i = 0; i < employeeDetails.employee.length; i++) {
 	            // Check if the current element is not null
 	            if (employeeDetails.employee[i] != null) {
-	                System.out.println(employeeDetails.employee.length);
-	                System.out.println(employeeDetails.employee[i].getEmployeeID());
-
 	                if (employeeDetails.employee[i].getEmployeeID().equals(employeeID) &&
 	                    employeeDetails.employee[i].getPassword().equals(password)) {
 	                    return true;
