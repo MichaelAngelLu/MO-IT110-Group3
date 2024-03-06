@@ -30,13 +30,14 @@ public class EmployeeDetails {
 	//employee account details
 	private String accessRole;
 	private String employeeID;
+	protected String password;
 	
 	//Initialize attributes
 	public EmployeeDetails(String employeeID, String firstName, String lastName, String birthday, String address, 
 			String phoneNumber, String employeeStatus, String departmentID, String positionID,
 			String immediateSupervisorID, String sssNo, String phicNo, String tinNo, String hdmfNo,
 			String basicSalary, String riceSubsidy, String phoneAllowance, String clothingAllowance, 
-			String hourlyRate, String accessRole) {
+			String hourlyRate, String accessRole, String password) {
 	
 		this.employeeID = employeeID;
 		this.firstName = firstName;
@@ -58,9 +59,10 @@ public class EmployeeDetails {
 		this.clothingAllowance = clothingAllowance;
 		this.hourlyRate = hourlyRate;
 		this.accessRole = accessRole;
+		this.password = password;
 		
 	}
-	
+
 	//Getter methods
 	public String getEmployeeID() {
 		return employeeID;
@@ -142,6 +144,14 @@ public class EmployeeDetails {
 		return accessRole;
 	}
 	
+	public String getPassword() {
+		return password;
+	}
+	
+	public String getFullName() {
+		return firstName + " " + lastName;
+	}
+	
 	//Setter methods
 	
 	public void setEmployeeID(String employeeID) {
@@ -184,40 +194,43 @@ public class EmployeeDetails {
         this.immediateSupervisorID = immediateSupervisorID;
     }
 	
-	public void setSSSNo(String employeeID) {
-        this.employeeID = employeeID;
+	public void setSSSNo(String sssNo) {
+        this.sssNo = sssNo;
     }
 	
-	public void setPhilHealthNo(String employeeID) {
-        this.employeeID = employeeID;
+	public void setPhilHealthNo(String phicNo) {
+        this.phicNo = phicNo;
     }
 	
-	public void setTINNo(String employeeID) {
-        this.employeeID = employeeID;
+	public void setTINNo(String tinNo) {
+        this.tinNo = tinNo;
     }
 	
-	public void setPagibigNo(String employeeID) {
-        this.employeeID = employeeID;
+	public void setPagibigNo(String hdmfNo) {
+        this.hdmfNo = hdmfNo;
     }
 	
-	public void setRiceSubsidy(String employeeID) {
-        this.employeeID = employeeID;
+	public void setRiceSubsidy(String riceSubsidy) {
+        this.riceSubsidy = riceSubsidy;
     }
 	
-	public void setPhoneAllowance(String employeeID) {
-        this.employeeID = employeeID;
+	public void setPhoneAllowance(String phoneAllowance) {
+        this.phoneAllowance = phoneAllowance;
     }
 	
-	public void setClothingAllowance(String employeeID) {
-        this.employeeID = employeeID;
+	public void setClothingAllowance(String clothingAllowance) {
+        this.clothingAllowance = clothingAllowance;
     }
 	
-	public void setHourlyRate(String employeeID) {
-        this.employeeID = employeeID;
+	public void setHourlyRate(String hourlyRate) {
+        this.hourlyRate = hourlyRate;
     }
 	
-	public void setAccessRole(String employeeID) {
-        this.employeeID = employeeID;
+	public void setAccessRole(String accessRole) {
+        this.accessRole = accessRole;
     }
 	
+	public void setPassword(String password) {
+		this.password = password;
+	}
 }

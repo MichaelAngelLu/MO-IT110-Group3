@@ -2,16 +2,20 @@ package com.oop.motorph.payrollsystem;
 
 public class PayrollHomepage extends Employee {
 	
+	static int currentUser;
+	
 	public void displayHomepage() {
+		//Initialize employee details
+		readCsvFile();
 		//Homepage greetings and notifications
-		System.out.println("Welcome, <user> !!!");
+		System.out.println("Welcome, " + employee[currentUser - 10001].getFullName() + " !!!");
 		System.out.println("\nDASHBOARD");
 		System.out.println("You Have: ");
 		System.out.println("n Pending Approval(s)");
 		System.out.println("n Pending Request(s)");
 		
 		//Homepage menu
-		System.out.println("\nHomepage Menu:");
+		System.out.println("\n" + "Homepage Menu:");
 		System.out.println("<1> Dashboard");
 		System.out.println("<2> Department");
 		System.out.println("<3> Requests");
@@ -56,8 +60,13 @@ public class PayrollHomepage extends Employee {
 			System.out.println("You chose: " + i);
 			break;
 		case "8":
-			System.out.println("You chose: " + i);
+			System.out.println("\nLogging Out...\n");
+			UserLogin logout = new UserLogin();
+			logout.insertData();
 			break;
+		default:
+			System.out.println("Invalid Input. Please Try Again.");
+			allowInput();
 		}
 	}
 	
