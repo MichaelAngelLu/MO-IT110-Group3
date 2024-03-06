@@ -1,4 +1,4 @@
-package com.oop.motorph.payrollsystem;
+package com.mycompany.oopconsole.src.com.oop.motorph.payrollsystem;
 
 public class EmployeeDetails {
 	

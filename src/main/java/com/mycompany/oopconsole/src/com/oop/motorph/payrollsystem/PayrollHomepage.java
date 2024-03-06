@@ -1,4 +1,4 @@
-package com.oop.motorph.payrollsystem;
+package com.mycompany.oopconsole.src.com.oop.motorph.payrollsystem;
 
 public class PayrollHomepage extends Employee {
 	
@@ -42,7 +42,10 @@ public class PayrollHomepage extends Employee {
 			break;
 		case "3":
 			System.out.println("You chose: " + i);
+                        EmployeeLeave leaveemployee = new EmployeeLeave();
+                        leaveemployee.AccessLeave();
 			break;
+
 		case "4":
 			System.out.println("You chose: " + i);
 			break;
