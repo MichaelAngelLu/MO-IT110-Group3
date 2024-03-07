@@ -5,6 +5,10 @@ public class PayrollHomepage extends Employee {
 	static int currentUser;
 	
 	public void displayHomepage() {
+		//Check if user is logged in
+		if (currentUser == 0) {
+			displayError(1);
+		}
 		//Initialize employee details
 		readCsvFile();
 		//Homepage greetings and notifications
@@ -20,10 +24,11 @@ public class PayrollHomepage extends Employee {
 		System.out.println("<2> Department");
 		System.out.println("<3> Requests");
 		System.out.println("<4> Payroll");
-		System.out.println("<5> Timesheets");
-		System.out.println("<6> Settings");
-		System.out.println("<7> Reports");
-		System.out.println("<8> Log Out");
+		System.out.println("<5> Employees");
+		System.out.println("<6> Timesheets");
+		System.out.println("<7> Settings");
+		System.out.println("<8> Reports");
+		System.out.println("<9> Log Out");
 		
 		//Prompt user how to response/interact with system
 		System.out.println("\nEnter selection:");
@@ -51,7 +56,7 @@ public class PayrollHomepage extends Employee {
 			System.out.println("You chose: " + i);
 			break;
 		case "5":
-			System.out.println("You chose: " + i);
+			displayEmployeesAdmin();
 			break;
 		case "6":
 			System.out.println("You chose: " + i);
@@ -60,6 +65,9 @@ public class PayrollHomepage extends Employee {
 			System.out.println("You chose: " + i);
 			break;
 		case "8":
+			System.out.println("You chose: " + i);
+			break;
+		case "9":
 			System.out.println("\nLogging Out...\n");
 			UserLogin logout = new UserLogin();
 			logout.insertData();
@@ -67,6 +75,16 @@ public class PayrollHomepage extends Employee {
 		default:
 			System.out.println("Invalid Input. Please Try Again.");
 			allowInput();
+		}
+	}
+	
+	public void displayError(int type) {
+		switch (type) {
+		case 1:
+			System.out.println("You must login to continue. Press \"ENTER\" key to proceed to login.");
+			scan.nextLine();
+			UserLogin login = new UserLogin();
+			login.greetUser();
 		}
 	}
 	

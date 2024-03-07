@@ -128,7 +128,7 @@ public class EmployeeDetails {
 		return riceSubsidy;
 	}
 	
-	public String getphoneAllowance() {
+	public String getPhoneAllowance() {
 		return phoneAllowance;
 	}
 	

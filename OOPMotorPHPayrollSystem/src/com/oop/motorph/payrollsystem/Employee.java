@@ -49,4 +49,81 @@ public class Employee {
 			e.printStackTrace();
 		} 
 	}
+	
+	//Display List of Employees w/Admin permission
+	public void displayEmployeesAdmin() {
+		
+	//Reinitialize employee details
+	readCsvFile();
+	//Print details to console
+		System.out.println("--------------------------------------------------------------------------------------------------");
+		System.out.printf("| %-5s | %-25s | %-15s | %-15s | %-11s | %-8s |\n", "ID", "Name", "Department", "Position", "Contact", "Requests");
+		System.out.println("--------------------------------------------------------------------------------------------------");
+//		System.out.printf("| %-5s | %-25s | %-15s | %-15s | %-11s |\n", "10001", "Manuel III Garcia", "Executive", "CEO", "9XX-XXX-XXX");
+			for (int i = 0; i < employee.length; i++) {
+				System.out.printf("| %-5s | %-25s | %-15s | %-15s | %-11s | %-8s |\n", employee[i].getEmployeeID(), employee[i].getFullName(),
+						employee[i].getDepartmentID(), employee[i].getPositionID(), employee[i].getPhoneNumber(), "   " + 0);
+			}
+		System.out.println("--------------------------------------------------------------------------------------------------");
+		displaySelection();
+	}
+	
+	public void displaySelection() {
+		System.out.println("\n"
+				+ "<1> Search\n"
+				+ "<2> Employee Requests\n"
+				+ "<3> Edit Employee\n"
+				+ "<4> Add Employee\n"
+				+ "<5> Remove Employee\n"
+				+ "<6> Back");
+		allowSelectionInput();
+	}
+	
+	public void allowSelectionInput() {
+		String i = scan.next();
+		
+		switch(i) {
+		case "1":
+			searchEmployee();
+			break;
+		case "6":
+			PayrollHomepage homepage = new PayrollHomepage();
+			homepage.displayHomepage();
+			break;
+		}
+	}
+ 	
+	public void searchEmployee() {
+		System.out.print("Enter Employee ID: ");
+		String search = scan.next();
+		boolean found = false;
+		EmployeeDetails foundEmployee = null;
+		
+		for (EmployeeDetails employee : employee) {
+			if (employee.getEmployeeID().equals(search)) {
+                found = true;
+                foundEmployee = employee;
+                break;
+            }
+		}
+		
+		// Check if the employee was found
+        if (found) {
+            System.out.println("Employee found:");
+    		System.out.println("--------------------------------------------------------------------------------------------------");
+    		System.out.printf("| %-5s | %-25s | %-15s | %-15s | %-11s | %-8s |\n", "ID", "Name", "Department", "Position", "Contact", "Requests");
+    		System.out.println("--------------------------------------------------------------------------------------------------");
+    		
+				System.out.printf("| %-5s | %-25s | %-15s | %-15s | %-11s | %-8s |\n", foundEmployee.getEmployeeID(), foundEmployee.getFullName(),
+						foundEmployee.getDepartmentID(), foundEmployee.getPositionID(), foundEmployee.getPhoneNumber(), "   " + 0);
+			
+		System.out.println("--------------------------------------------------------------------------------------------------");
+		scan.nextLine();
+		System.out.println("\nPRESS ENTER TO EXIT");
+		scan.nextLine();
+		displaySelection();
+        } else {
+            System.out.println("Employee with ID " + search + " not found.");
+        }
+	}
 }
