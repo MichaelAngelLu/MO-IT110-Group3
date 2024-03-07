@@ -16,7 +16,7 @@ public class PayrollHomepage extends Employee {
 		System.out.println("\nDASHBOARD");
 		System.out.println("You Have: ");
 		System.out.println("n Pending Approval(s)");
-		System.out.println("n Pending Request(s)");
+		System.out.println("0 Pending Request(s)");
 		
 		//Homepage menu
 		System.out.println("\n" + "Homepage Menu:");
