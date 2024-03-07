@@ -32,40 +32,40 @@ public class PayrollHomepage extends Employee {
 		
 		//Prompt user how to response/interact with system
 		System.out.println("\nEnter selection:");
-		allowInput();
+		allowHomepageInput();
 	}
 	
-	public void allowInput() {
+	public void allowHomepageInput() {
 		String i = scan.next();
-		redirectUser(i);
+		redirectFromHomepage(i);
 	}
 	
-	public void redirectUser(String i) {
+	public void redirectFromHomepage(String i) {
 		switch(i) {
 		case "1":
-			System.out.println("You chose: " + i);
-			allowInput();
+			System.out.println("You chose: " + i); // For debug/testing only. Remove this after finishing this part.
+			allowHomepageInput();
 			break;
 		case "2":
-			System.out.println("You chose: " + i);
+			System.out.println("You chose: " + i); // For debug/testing only. Remove this after finishing this part.
 			break;
 		case "3":
-			System.out.println("You chose: " + i);
+			displayRequestsMenu();
 			break;
 		case "4":
-			System.out.println("You chose: " + i);
+			System.out.println("You chose: " + i); // For debug/testing only. Remove this after finishing this part.
 			break;
 		case "5":
 			displayEmployeesAdmin();
 			break;
 		case "6":
-			System.out.println("You chose: " + i);
+			System.out.println("You chose: " + i); // For debug/testing only. Remove this after finishing this part.
 			break;
 		case "7":
-			System.out.println("You chose: " + i);
+			System.out.println("You chose: " + i); // For debug/testing only. Remove this after finishing this part.
 			break;
 		case "8":
-			System.out.println("You chose: " + i);
+			System.out.println("You chose: " + i); // For debug/testing only. Remove this after finishing this part.
 			break;
 		case "9":
 			System.out.println("\nLogging Out...\n");
@@ -74,7 +74,30 @@ public class PayrollHomepage extends Employee {
 			break;
 		default:
 			System.out.println("Invalid Input. Please Try Again.");
-			allowInput();
+			allowHomepageInput();
+		}
+	}
+	
+	public void displayRequestsMenu() {
+		//Requests menu
+				System.out.println("\n" + "Requests:");
+				System.out.println("<1> Leave");
+				System.out.println("<2> Overtime");
+				System.out.println("<3> Payslips");
+				allowRequestsInput();
+	}
+	
+	public void allowRequestsInput() {
+		String i = scan.next();
+		redirectFromRequests(i);
+	}
+	
+	public void redirectFromRequests(String i) {
+		switch(i) {
+		case "1":
+            EmployeeLeave leaveemployee = new EmployeeLeave();
+            leaveemployee.AccessLeave();
+			break;
 		}
 	}
 	
