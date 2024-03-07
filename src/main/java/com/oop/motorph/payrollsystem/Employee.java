@@ -1,4 +1,4 @@
-package com.oop.payrollsystem;
+package com.oop.motorph.payrollsystem;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
