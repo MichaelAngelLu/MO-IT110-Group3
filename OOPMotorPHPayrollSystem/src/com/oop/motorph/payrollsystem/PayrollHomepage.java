@@ -10,7 +10,7 @@ public class PayrollHomepage extends Employee {
 			displayError(1);
 		}
 		//Initialize employee details
-		readCsvFile();
+		readEmployeeCsv();
 		//Homepage greetings and notifications
 		System.out.println("Welcome, " + employee[currentUser - 10001].getFullName() + " !!!");
 		System.out.println("\nDASHBOARD");

@@ -13,7 +13,7 @@ public class Employee {
 	protected EmployeeDetails[] employee = new EmployeeDetails[34];
 	private String path = "csv/EmployeeDetails.csv", line = "";
 	
-	public void readCsvFile() {
+	public void readEmployeeCsv() {
 		//Read from csv file
 		try {
 	        BufferedReader br = new BufferedReader(new FileReader(path));
@@ -54,7 +54,7 @@ public class Employee {
 	public void displayEmployeesAdmin() {
 		
 	//Reinitialize employee details
-	readCsvFile();
+	readEmployeeCsv();
 	//Print details to console
 		System.out.println("--------------------------------------------------------------------------------------------------");
 		System.out.printf("| %-5s | %-25s | %-15s | %-15s | %-11s | %-8s |\n", "ID", "Name", "Department", "Position", "Contact", "Requests");
@@ -65,10 +65,10 @@ public class Employee {
 						employee[i].getDepartmentID(), employee[i].getPositionID(), employee[i].getPhoneNumber(), "   " + 0);
 			}
 		System.out.println("--------------------------------------------------------------------------------------------------");
-		displaySelection();
+		displaySelectionAdmin();
 	}
 	
-	public void displaySelection() {
+	public void displaySelectionAdmin() {
 		System.out.println("\n"
 				+ "<1> Search\n"
 				+ "<2> Employee Requests\n"
@@ -86,9 +86,28 @@ public class Employee {
 		case "1":
 			searchEmployee();
 			break;
+		case "2":
+			displayRequestMenu();
+			break;
 		case "6":
 			PayrollHomepage homepage = new PayrollHomepage();
 			homepage.displayHomepage();
+			break;
+		}
+	}
+	
+	public void displayRequestMenu() {
+		System.out.print("\nEmployee Requests:\n"
+				+ "<1> Leave Requests\n"
+				+ "<2> Overtime Requests\n\n"
+				+ "Enter Choice: ");
+		String i = scan.next();
+		switch (i) {
+		case "1":
+			LeaveManagement leaves = new LeaveManagement();
+			leaves.displayLeaveRequests();
+			break;
+		case "2":
 			break;
 		}
 	}
@@ -121,7 +140,7 @@ public class Employee {
 		scan.nextLine();
 		System.out.println("\nPRESS ENTER TO EXIT");
 		scan.nextLine();
-		displaySelection();
+		displaySelectionAdmin();
         } else {
             System.out.println("Employee with ID " + search + " not found.");
         }

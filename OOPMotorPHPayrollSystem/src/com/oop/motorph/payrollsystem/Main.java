@@ -10,7 +10,8 @@ public class Main {
 //		Employee employeeDetails = new Employee();
 //		employeeDetails.displayEmployeesAdmin();
 //		System.out.println(employeeDetails.employee[0].getFirstName());
-		
+//		LeaveManagement leave = new LeaveManagement();
+//		leave.displayLeaveRequests();
 		//Prompt user to login after application startup
 		UserLogin login = new UserLogin();
 		login.greetUser();
