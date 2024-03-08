@@ -19,15 +19,15 @@ import java.time.format.DateTimeParseException;
 
 
 
-public class EmployeeLeave extends Employee {
-   private static final String CSV_FILE = "..\\payrollsystem\\csv\\leave_application.csv";
+public class EmployeeOvertime extends Employee {
+   private static final String CSV_FILE = "..\\payrollsystem\\csv\\overtime_application.csv";
    Scanner scan = new Scanner(System.in);
    
-   public void AccessLeave(){
+   public void AccessOvertime(){
 		//Homepage menu
-		System.out.println("\nLeave Menu:");
-		System.out.println("<1> Check Leave Credits and Pending Leaves");
-		System.out.println("<2> Apply For Leave");
+		System.out.println("\nOvertime Menu:");
+		System.out.println("<1> Check Pending Overtime");
+		System.out.println("<2> Apply For Overtime");
 		System.out.println("<3> Back");		
 		//Prompt user how to response/interact with system
 		System.out.println("\nEnter selection:");
@@ -39,52 +39,53 @@ public class EmployeeLeave extends Employee {
 		redirectUser(i);
 	}
    
+
    public void redirectUser(String i) {
 		switch(i) {
-               case "1":
+                case "1":
 			System.out.println("You chose: " + i);
-			CheckLeaveCredits();
+			CheckPendingOvertime();
 			break;
 		case "2":
 			System.out.println("You chose: " + i);
-                        ApplyLeave();
+                        ApplyOvertime();
 			break;
 		case "3":
 			System.out.println("You chose: " + i);
-                       PayrollHomepage homepage = new PayrollHomepage();
-                       homepage.displayRequestsMenu();
+                        PayrollHomepage homepage = new PayrollHomepage();
+                        homepage.displayRequestsMenu();
 			break;
                
                }
    }            
 
-   public void CheckLeaveCredits(){
-       System.out.println("Check Leave Credits");
-       AccessLeave();
+   public void CheckPendingOvertime(){
+       System.out.println("Check Pending Overtime");
+       AccessOvertime();
    }
 
-   public void ApplyLeave(){
+   public void ApplyOvertime(){
        
        try (FileWriter writer = new FileWriter(CSV_FILE, true)) {
-            System.out.println("Apply Leave");
+            System.out.println("Apply Overtime");
 
             System.out.print("Write reason for leave: ");
             String reason = scan.next();
-            System.out.print("Write Start Date (YYYY-MM-DD): ");
-            String leaveStartDate = scan.next();
-            System.out.print("Write End Date (YYYY-MM-DD): ");
-            String leaveEndDate = scan.next();
-            System.out.print("Details of Leave: ");
-            String comments = scan.nextLine();
+            System.out.print("Write Overtime Date (YYYY-MM-DD): ");
+            String overtimeDate = scan.next();
+            System.out.print("Write Start Time (HH:MM): ");
+            String overtimeStartTime = scan.next();
+            System.out.print("Write End Time (HH:MM): ");
+            String overtimeEndTime = scan.next();
 
             // Write the input data into the CSV file
-            writer.write("\n" + reason + "," + leaveStartDate + "," + leaveEndDate + "," + comments);
+            writer.write("\n" + reason + "," + overtimeDate + "," + overtimeStartTime + "," + overtimeEndTime);
 
             System.out.println("Leave application saved to " + CSV_FILE);
-            AccessLeave();
+            AccessOvertime();
         } catch (IOException e) {
             System.err.println("Error writing to CSV file: " + e.getMessage());
-            AccessLeave();
+            AccessOvertime();
         }
    }
    

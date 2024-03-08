@@ -95,10 +95,14 @@ public class PayrollHomepage extends Employee {
 	public void redirectFromRequests(String i) {
 		switch(i) {
 		case "1":
-            EmployeeLeave leaveemployee = new EmployeeLeave();
-            leaveemployee.AccessLeave();
-			break;
-		}
+                    EmployeeLeave leaveemployee = new EmployeeLeave();
+                    leaveemployee.AccessLeave();
+                    break;
+		case "2":
+                    EmployeeOvertime overtimeemployee = new EmployeeOvertime();
+                    overtimeemployee.AccessOvertime();
+                    break;
+                }
 	}
 	
 	public void displayError(int type) {
