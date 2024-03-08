@@ -1,29 +1,27 @@
 package com.oop.motorph.payrollsystem;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
 //import com.opencsv.CSVReader;
 
 public class Employee {
 	
 	Scanner scan = new Scanner(System.in);
-	protected EmployeeDetails[] employee = new EmployeeDetails[34];
-	private String path = "csv/EmployeeDetails.csv", line = "";
+	protected EmployeeDetails[] employee = new EmployeeDetails[50];
+	private String path = "csv/EmployeeDetails.csv";
 	
 	public void readEmployeeCsv() {
-		//Read from csv file
-		try {
-	        BufferedReader br = new BufferedReader(new FileReader(path));
+	    try (CSVReader reader = new CSVReader(new FileReader(path))) {
+	        String[] values;
 	        int i = 0;
-
-	        while ((line = br.readLine()) != null) {
-
-	            String[] values = line.split(",");
-	            
-	         // check if any value is empty or null
+	        while ((values = reader.readNext()) != null) {
+	            // Check if any value is empty or null
 	            boolean hasEmptyValue = false;
 	            for (String value : values) {
 	                if (value == null || value.isEmpty()) {
@@ -32,22 +30,31 @@ public class Employee {
 	                }
 	            }
 
-	            	if (hasEmptyValue) {
+	            if (hasEmptyValue) {
 	                // skip this line
 	                continue;
 	            }
 	            employee[i] = new EmployeeDetails(values[0], values[1], values[2], values[3], values[4], values[5],
 	                    values[6], values[7], values[8], values[9], values[10], values[11], values[12], values[13],
 	                    values[14], values[15], values[16], values[17], values[18], values[19], values[20]);
-	            
+
 	            i++;
 	        }
-	        br.close();
-		} catch (FileNotFoundException e) {
+	    } catch (FileNotFoundException e) {
 	        e.printStackTrace();
 	    } catch (IOException e) {
-			e.printStackTrace();
-		} 
+	        e.printStackTrace();
+	    }
+	}
+	
+	public int countTotalEmployees() {
+	    int count = 0;
+	    for (EmployeeDetails emp : employee) {
+	        if (emp != null) {
+	            count++;
+	        }
+	    }
+	    return count;
 	}
 	
 	//Display List of Employees w/Admin permission
@@ -55,20 +62,34 @@ public class Employee {
 		
 	//Reinitialize employee details
 	readEmployeeCsv();
+	
 	//Print details to console
 		System.out.println("--------------------------------------------------------------------------------------------------");
 		System.out.printf("| %-5s | %-25s | %-15s | %-15s | %-11s | %-8s |\n", "ID", "Name", "Department", "Position", "Contact", "Requests");
 		System.out.println("--------------------------------------------------------------------------------------------------");
 //		System.out.printf("| %-5s | %-25s | %-15s | %-15s | %-11s |\n", "10001", "Manuel III Garcia", "Executive", "CEO", "9XX-XXX-XXX");
-			for (int i = 0; i < employee.length; i++) {
-				System.out.printf("| %-5s | %-25s | %-15s | %-15s | %-11s | %-8s |\n", employee[i].getEmployeeID(), employee[i].getFullName(),
-						employee[i].getDepartmentID(), employee[i].getPositionID(), employee[i].getPhoneNumber(), "   " + 0);
-			}
+		try {
+	        for (int i = 0; i < employee.length; i++) {
+	            if (employee[i] != null && employee[i].getEmployeeID() != null) {
+	                System.out.printf("| %-5s | %-25s | %-15s | %-15s | %-11s | %-8s |\n", employee[i].getEmployeeID(), employee[i].getFullName(),
+	                        employee[i].getDepartmentID(), employee[i].getPositionID(), employee[i].getPhoneNumber(), "   " + 0);
+	            } else {
+	                // Handle the case where employee[i] is null
+	                continue;
+	            }
+	        }
+	    } catch (NullPointerException e) {
+	        // Handle NullPointerException
+	        System.out.println("Error: NullPointerException occurred while accessing employee information.");
+	        e.printStackTrace(); // Print the stack trace for debugging purposes
+	    }
 		System.out.println("--------------------------------------------------------------------------------------------------");
-		displaySelectionAdmin();
+		
 	}
 	
 	public void displaySelectionAdmin() {
+		//Reinitialize employee details
+		readEmployeeCsv();
 		System.out.println("\n"
 				+ "<1> Search\n"
 				+ "<2> Employee Requests\n"
@@ -92,6 +113,29 @@ public class Employee {
 			break;
 		case "3":
 			inputEmployeeToEdit();
+			break;
+		case "4":
+			addEmployee();
+			break;
+		case "5":
+			System.out.print("\nEnter Employee ID of Employee to Remove from Employee List: ");
+			String employee, response;
+			int index; 
+			employee = scan.next();
+			index = Integer.parseInt(employee) - 10001;
+			if (employee != null) {
+				System.out.println("Are you sure your want to remove Employee " + employee + " from list? (Y/N)");
+				response = scan.next();
+				if (response.equalsIgnoreCase("Y")) {
+					removeEmployee(index);
+					System.out.println("Employee successfully removed from employee list.");
+					displayEmployeesAdmin();
+					displaySelectionAdmin();
+				} else {
+					System.out.println("Removal Cancelled. Redirecting User to Employee Menu.");
+					displaySelectionAdmin();
+				}
+			}
 			break;
 		case "6":
 			PayrollHomepage homepage = new PayrollHomepage();
@@ -235,6 +279,12 @@ public class Employee {
 		            if (!newStatus.isEmpty()) {
 		                employee[index].setEmployeeStatus(newStatus);
 		            } // Skip if blank
+		            
+		            System.out.print("New Department (current: " + employee[index].getDepartmentID() + "): ");
+		            String newDepartmentID = scan.nextLine();
+		            if (!newDepartmentID.isEmpty()) {
+		                employee[index].setPositionID(newDepartmentID);
+		            } // Skip if blank
 
 		            System.out.print("New Position (current: " + employee[index].getPositionID() + "): ");
 		            String newPositionID = scan.nextLine();
@@ -289,7 +339,7 @@ public class Employee {
 				String confirm = scan.next();
 				if (confirm.equalsIgnoreCase("Y")) {
 					//Write to csv file
-					//Write code here
+					writeEmployeeCsv(path);
 					
 					//Print message once changes has been saved
 					System.out.println("Changes saved successfully!");
@@ -343,4 +393,158 @@ public class Employee {
 		System.out.printf("| %-20s | PHP %-57.2f |\n", "Clothing Allowance", Float.parseFloat(employee[index].getClothingAllowance()));
 		System.out.println("----------------------------------------------------------------------------------------");
 	}
+	
+	public void addEmployee() {
+		//Auto-increment new employee ID
+		String newEmployeeID = countTotalEmployees() + 10001 + "";
+		int index = countTotalEmployees() + 1;
+		
+		//Create new instance for new employee
+		if (this.employee[index] == null) {
+		    this.employee[index] = new EmployeeDetails(newEmployeeID, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "temp", "password"); // Create a new EmployeeDetails object
+		}
+		
+		System.out.println("\nAdd Employee " + newEmployeeID + " to System:");
+		System.out.println("Please fill all information to complete this process.\n");
+		
+		String[] fieldNames = {"First Name", "Last Name", "Birthday", "Address", "Phone Number", "Employee Status",
+		        "Department ID", "Position ID", "Immediate Supervisor ID", "SSS #", "PhilHealth #",
+		        "TIN #", "Pag-Ibig #", "Basic Salary", "Hourly Rate", "Rice Subsidy", "Phone Allowance",
+		        "Clothing Allowance"};
+		scan.nextLine();
+		for (String fieldName : fieldNames) {
+		    String fieldValue;
+		    boolean invalidInput = false;
+		    do {
+		        System.out.print(fieldName + ": ");
+		        fieldValue = scan.nextLine();
+
+		        if (fieldValue.isEmpty()) {
+		            System.out.println("Please enter a non-empty value.");
+		        } else {
+		            if (fieldName.equals("Basic Salary") || fieldName.equals("Hourly Rate") || fieldName.equals("Rice Subsidy")
+		                    || fieldName.equals("Phone Allowance") || fieldName.equals("Clothing Allowance")) {
+		                // Check if user input in fieldValue variable is a number
+		                try {
+		                    float fieldValueFloat = Float.parseFloat(fieldValue);
+		                    // If the conversion succeeds, set the field value
+		                    invalidInput = false;
+		                    setFieldValue(fieldName, fieldValue, index);
+		                } catch (NumberFormatException e) {
+		                    System.out.println("Please enter a valid number for " + fieldName);
+		                    invalidInput = true;
+		                    continue;
+		                }
+		            } else {
+		            	invalidInput = false;
+		                // Set the field value based on the field name
+		                setFieldValue(fieldName, fieldValue, index);
+		            }
+		        }
+		    } while (fieldValue.isEmpty() || invalidInput == true);
+		}
+		
+		displayCurrentInfo(newEmployeeID, index);
+		System.out.println("\nDo you want to save new employee record? (Y/N)");
+		String confirm = scan.next();
+		if (confirm.equalsIgnoreCase("Y")) {
+			//Write to csv file
+			writeEmployeeCsv(path);
+			
+			//Print message once changes has been saved
+			System.out.println("Changes saved successfully!");
+			displaySelectionAdmin();
+		} else if (confirm.equalsIgnoreCase("N")) {
+			employee[index] = null;
+			addEmployee();
+		}
+	}
+	
+	public void removeEmployee(int index) {
+		this.employee[index] = null;
+		writeEmployeeCsv(path);
+	}
+	
+	private void setFieldValue(String fieldName, String fieldValue, int index) {
+	    switch (fieldName) {
+	        case "First Name":
+	            employee[index].setFirstName(fieldValue);
+	            break;
+	        case "Last Name":
+	            employee[index].setLastName(fieldValue);
+	            break;
+	        case "Birthday":
+	            employee[index].setBirthday(fieldValue);
+	            break;
+	        case "Address":
+	            employee[index].setAddress(fieldValue);
+	            break;
+	        case "Phone Number":
+	            employee[index].setPhoneNumber(fieldValue);
+	            break;
+	        case "Employee Status":
+	            employee[index].setEmployeeStatus(fieldValue);
+	            break;
+	        case "Department ID":
+	            employee[index].setDepartmentID(fieldValue);
+	            break;
+	        case "Position ID":
+	            employee[index].setPositionID(fieldValue);
+	            break;
+	        case "Immediate Supervisor ID":
+	            employee[index].setImmediateSupervisorID(fieldValue);
+	            break;
+	        case "SSS #":
+	            employee[index].setSSSNo(fieldValue);
+	            break;
+	        case "PhilHealth #":
+	            employee[index].setPhilHealthNo(fieldValue);
+	            break;
+	        case "TIN #":
+	            employee[index].setTINNo(fieldValue);
+	            break;
+	        case "Pag-Ibig #":
+	            employee[index].setPagibigNo(fieldValue);
+	            break;
+	        case "Basic Salary":
+	            employee[index].setBasicSalary(fieldValue);
+	            break;
+	        case "Hourly Rate":
+	            employee[index].setHourlyRate(fieldValue);
+	            break;
+	        case "Rice Subsidy":
+	            employee[index].setRiceSubsidy(fieldValue);
+	            break;
+	        case "Phone Allowance":
+	            employee[index].setPhoneAllowance(fieldValue);
+	            break;
+	        case "Clothing Allowance":
+	            employee[index].setClothingAllowance(fieldValue);
+	            break;
+	        default:
+	            break;
+	    }
+	}
+	
+	public void writeEmployeeCsv(String outputPath) {
+	    try (CSVWriter writer = new CSVWriter(new FileWriter(outputPath))) {
+	        for (EmployeeDetails emp : employee) {
+	            if (emp != null) {
+	                String[] data = {
+	                		emp.getEmployeeID(), emp.getFirstName(), emp.getLastName(),
+	                        emp.getBirthday(), emp.getAddress(), emp.getPhoneNumber(),
+	                        emp.getEmployeeStatus(), emp.getDepartmentID(), emp.getPositionID(),
+	                        emp.getimmediateSupervisorID(), emp.getSSSNo(), emp.getPhilHealthNo(),
+	                        emp.getTinNo(), emp.getPagibigNo(), emp.getBasicSalary(),
+	                        emp.getRiceSubsidy(), emp.getPhoneAllowance(), emp.getClothingAllowance(),
+	                        emp.getHourlyRate(), emp.getAccessRole(), emp.getPassword()
+	                };
+	                writer.writeNext(data);
+	            }
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
+	
 }

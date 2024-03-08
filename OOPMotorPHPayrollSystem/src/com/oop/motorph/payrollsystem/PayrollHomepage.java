@@ -57,6 +57,7 @@ public class PayrollHomepage extends Employee {
 			break;
 		case "5":
 			displayEmployeesAdmin();
+			displaySelectionAdmin();
 			break;
 		case "6":
 			System.out.println("You chose: " + i); // For debug/testing only. Remove this after finishing this part.
