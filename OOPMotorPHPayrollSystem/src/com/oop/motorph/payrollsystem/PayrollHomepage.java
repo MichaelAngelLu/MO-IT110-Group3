@@ -31,7 +31,7 @@ public class PayrollHomepage extends Employee {
 		System.out.println("<9> Log Out");
 		
 		//Prompt user how to response/interact with system
-		System.out.println("\nEnter selection:");
+		System.out.print("\nEnter selection: ");
 		allowHomepageInput();
 	}
 	
@@ -84,6 +84,7 @@ public class PayrollHomepage extends Employee {
 				System.out.println("<1> Leave");
 				System.out.println("<2> Overtime");
 				System.out.println("<3> Payslips");
+				System.out.print("\nEnter Selection: ");
 				allowRequestsInput();
 	}
 	
@@ -104,7 +105,7 @@ public class PayrollHomepage extends Employee {
 	public void displayError(int type) {
 		switch (type) {
 		case 1:
-			System.out.println("You must login to continue. Press \"ENTER\" key to proceed to login.");
+			System.out.println("You must login to continue. Press \"ENTER\" key to proceed to login. >>");
 			scan.nextLine();
 			UserLogin login = new UserLogin();
 			login.greetUser();

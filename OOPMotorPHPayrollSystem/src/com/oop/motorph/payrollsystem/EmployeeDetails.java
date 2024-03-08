@@ -210,6 +210,10 @@ public class EmployeeDetails {
         this.hdmfNo = hdmfNo;
     }
 	
+	public void setBasicSalary(String basicSalary) {
+		this.basicSalary = basicSalary;
+	}
+	
 	public void setRiceSubsidy(String riceSubsidy) {
         this.riceSubsidy = riceSubsidy;
     }
