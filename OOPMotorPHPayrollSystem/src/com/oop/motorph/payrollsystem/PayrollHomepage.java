@@ -35,10 +35,7 @@ public class PayrollHomepage extends Employee {
 		allowHomepageInput();
 	}
 	
-	public void allowHomepageInput() {
-		String i = scan.next();
-		redirectFromHomepage(i);
-	}
+
 	
 	public void redirectFromHomepage(String i) {
 		switch(i) {
@@ -89,6 +86,11 @@ public class PayrollHomepage extends Employee {
 				allowRequestsInput();
 	}
 	
+	//Combine these two grr
+	public void allowHomepageInput() {
+		String i = scan.next();
+		redirectFromHomepage(i);
+	}
 	public void allowRequestsInput() {
 		String i = scan.next();
 		redirectFromRequests(i);
@@ -99,6 +101,10 @@ public class PayrollHomepage extends Employee {
 		case "1":
             EmployeeLeave leaveemployee = new EmployeeLeave();
             leaveemployee.AccessLeave();
+			break;
+		case "3":
+			Payslip payslip = new Payslip();
+			payslip.cutOffViewer();
 			break;
 		}
 	}

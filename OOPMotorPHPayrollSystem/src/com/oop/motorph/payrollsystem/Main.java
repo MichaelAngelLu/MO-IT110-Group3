@@ -15,6 +15,8 @@ public class Main {
 //		System.out.println(employeeDetails.employee[0].getFirstName());
 //		LeaveManagement leave = new LeaveManagement();
 //		leave.displayLeaveRequests();
+//		Payslip payslip = new Payslip();
+//		payslip.cutOffViewer();
 		
 		//Prompt user to login after application startup
 		UserLogin login = new UserLogin();
