@@ -35,8 +35,6 @@ public class PayrollHomepage extends Employee {
 		allowHomepageInput();
 	}
 	
-
-	
 	public void redirectFromHomepage(String i) {
 		switch(i) {
 		case "1":
