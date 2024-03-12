@@ -12,6 +12,7 @@ public class Payslip extends Employee {
 	// Create a DecimalFormat object to format numbers with commas
 	DecimalFormat formatter = new DecimalFormat("#,###.00");
 	protected PayslipDetails[] payslip = new PayslipDetails[500];
+	private HoursWorked hours = new HoursWorked();
 	private String path = "csv/Payslip.csv";
 	
 	public void readPayslipCsv() {
@@ -87,7 +88,7 @@ public class Payslip extends Employee {
 		System.out.println("----------------------------------------------------------------------------------------");
 		System.out.printf("| %-20s | PHP %57.2f |\n", "Basic Salary", Float.parseFloat(employee[0].getBasicSalary()));
 		System.out.printf("| %-20s | PHP %57.2f |\n", "Daily Rate", Float.parseFloat(employee[0].getHourlyRate()) * 8);
-		System.out.printf("| %-20s | %61.61s |\n", "Days Worked", "10");
+		System.out.printf("| %-20s | %61.2f |\n", "Days Worked", (double) hours.calculateHoursWorked("10001", "03/01/2024", "03/15/2024") / 8);
 		System.out.printf("| %-20s | %61.61s |\n", "Overtime", "0");
 		System.out.printf("| %-20s | PHP %57.2f |\n", "GROSS INCOME", Float.parseFloat(payslip[0].getGrossSalary()));
 		System.out.println("----------------------------------------------------------------------------------------");
