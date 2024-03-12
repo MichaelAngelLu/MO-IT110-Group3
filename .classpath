@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="src" path="MO-IT110-Group3/OOPMotorPHPayrollSystem/src"/>
 	<classpathentry kind="lib" path="E:/Coding Stuff/OOPGroup3MotorPH/MO-IT110-Group3/OOPMotorPHPayrollSystem/commons-lang3-3.14.0.jar">
 		<attributes>
@@ -16,5 +11,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17"/>
 	<classpathentry kind="output" path="MO-IT110-Group3/OOPMotorPHPayrollSystem/bin"/>
 </classpath>
