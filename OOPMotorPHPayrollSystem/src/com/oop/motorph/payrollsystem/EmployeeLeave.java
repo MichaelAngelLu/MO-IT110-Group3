@@ -46,7 +46,7 @@ public class EmployeeLeave {
 		case "3":
 			System.out.println("You chose: " + i);
                        PayrollHomepage homepage = new PayrollHomepage();
-                       homepage.displayRequestsMenu();
+                       homepage.displayHomepage();
 			break;
                
                }
