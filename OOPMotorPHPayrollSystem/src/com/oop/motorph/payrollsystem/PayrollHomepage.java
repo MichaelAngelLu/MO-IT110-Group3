@@ -35,7 +35,8 @@ public class PayrollHomepage extends Employee {
 			allowHomepageInput();
 			break;
 		case "2":
-			System.out.println("You chose: " + i); // For debug/testing only. Remove this after finishing this part.
+			EmployeeOvertime overtime = new EmployeeOvertime();
+			overtime.AccessOvertime();
 			break;
 		case "3":
 			Payslip payslip = new Payslip();
