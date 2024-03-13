@@ -71,7 +71,7 @@ public class Employee {
 		try {
 	        for (int i = 0; i < employee.length; i++) {
 	            if (employee[i] != null && employee[i].getEmployeeID() != null) {
-	                System.out.printf("| %-5s | %-25s | %-15s | %-15s | %-11s | %-8s |\n", employee[i].getEmployeeID(), employee[i].getFullName(),
+	                System.out.printf("| %-5.5s | %-25.25s | %-15.15s | %-15.15s | %-11.11s | %-8.8s |\n", employee[i].getEmployeeID(), employee[i].getFullName(),
 	                        employee[i].getDepartmentID(), employee[i].getPositionID(), employee[i].getPhoneNumber(), "   " + 0);
 	            } else {
 	                // Handle the case where employee[i] is null
@@ -90,6 +90,7 @@ public class Employee {
 	public void displaySelectionAdmin() {
 		//Reinitialize employee details
 		readEmployeeCsv();
+		if (hasAccess()) {
 		System.out.println("\n"
 				+ "<1> Search\n"
 				+ "<2> Employee Requests\n"
@@ -98,6 +99,12 @@ public class Employee {
 				+ "<5> Remove Employee\n"
 				+ "<6> Back");
 		System.out.print("\nEnter selection: ");
+		} else {
+			System.out.println("\n"
+					+ "<1> Search\n"
+					+ "<2> Back");
+			System.out.print("\nEnter selection: ");
+		}
 		allowSelectionInput();
 	}
 	
@@ -109,15 +116,32 @@ public class Employee {
 			searchEmployee();
 			break;
 		case "2":
-			displayRequestMenu();
+			if (hasAccess()) {
+				displayRequestMenu();
+			} else {
+				PayrollHomepage homepage = new PayrollHomepage();
+				homepage.displayHomepage();
+				break;
+			}
 			break;
 		case "3":
+			if (hasAccess()) {
 			inputEmployeeToEdit();
+			} else {
+				System.out.println("Invalid Input. Please Try Again.");
+				allowSelectionInput();
+			}
 			break;
 		case "4":
+			if (hasAccess()) {
 			addEmployee();
+			} else {
+				System.out.println("Invalid Input. Please Try Again.");
+				allowSelectionInput();
+			}
 			break;
 		case "5":
+			if (hasAccess()) {
 			System.out.print("\nEnter Employee ID of Employee to Remove from Employee List: ");
 			String employee, response;
 			int index; 
@@ -136,17 +160,34 @@ public class Employee {
 					displaySelectionAdmin();
 				}
 			}
+			} else {
+				System.out.println("Invalid Input. Please Try Again.");
+				allowSelectionInput();
+			}
 			break;
 		case "6":
+			if (hasAccess()) {
 			PayrollHomepage homepage = new PayrollHomepage();
 			homepage.displayHomepage();
+			break;
+			} else {
+				System.out.println("Invalid Input. Please Try Again.");
+				allowSelectionInput();
+			}
+		default:
+			System.out.println("Invalid Input. Please Try Again.");
+			allowSelectionInput();
 			break;
 		}
 	}
 	
+	public boolean hasAccess() {
+		return employee[PayrollHomepage.currentUser - 10001].getAccessRole().equals("admin");
+	}
+	
 	public void displayRequestMenu() {
 		System.out.print("\nEmployee Requests:\n"
-				+ "<1> Leave Requests\n"
+				+ "<1> Leave Requests\n" 
 				+ "<2> Overtime Requests\n"
 				+ "<3> Back\n\n"
 				+ "Enter selection: ");
@@ -157,6 +198,15 @@ public class Employee {
 			leaves.displayLeaveRequests();
 			break;
 		case "2":
+			OvertimeManagement ot = new OvertimeManagement();
+			ot.displayOvertimeRequests();
+			break;
+		case "3":
+			displaySelectionAdmin();
+			break;
+		default:
+			System.out.println("Invalid Input. Please Try Again.");
+			displayRequestMenu();
 			break;
 		}
 	}

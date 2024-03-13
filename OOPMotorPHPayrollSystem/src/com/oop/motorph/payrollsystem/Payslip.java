@@ -79,37 +79,58 @@ public class Payslip extends Employee {
 		System.out.println("----------------------------------------------------------------------------------------");
 		System.out.printf("| %-18.18s | %-19.19s | %-18.18s | %-20.20s |\n", "Payslip ID", payslip[0].getPayslipID(), 
 				"Cut-Off Date", payslip[0].getCutoffDate());
-		System.out.printf("| %-18.18s | %-19.19s | %-18.18s | %-20.20s |\n", "Employee ID", payslip[0].getEmployeeID(), 
-				"Department", payslip[0].getDepartmentID());
-		System.out.printf("| %-18.18s | %-19.19s | %-18.18s | %-20.20s |\n", "Employee Name", employee[0].getFullName(), 
-				"Position", payslip[0].getPositionID());
+		System.out.printf("| %-18.18s | %-19.19s | %-18.18s | %-20.20s |\n", "Employee ID", employee[PayrollHomepage.currentUser - 10001].getEmployeeID(), 
+				"Department", employee[PayrollHomepage.currentUser - 10001].getDepartmentID());
+		System.out.printf("| %-18.18s | %-19.19s | %-18.18s | %-20.20s |\n", "Employee Name", employee[PayrollHomepage.currentUser - 10001].getFullName(), 
+				"Position", employee[PayrollHomepage.currentUser - 10001].getPositionID());
 		System.out.println("----------------------------------------------------------------------------------------");
 		System.out.println("|  EARNINGS                                                                            |");
 		System.out.println("----------------------------------------------------------------------------------------");
-		System.out.printf("| %-20s | PHP %57.2f |\n", "Basic Salary", Float.parseFloat(employee[0].getBasicSalary()));
-		System.out.printf("| %-20s | PHP %57.2f |\n", "Daily Rate", Float.parseFloat(employee[0].getHourlyRate()) * 8);
+		
+		double basicSalary = Float.parseFloat(employee[PayrollHomepage.currentUser - 10001].getBasicSalary());
+		double daysWorked = (double) hours.calculateHoursWorked("10001", "03/01/2024", "03/15/2024") / 8;
+		double hourlyRate = Float.parseFloat(employee[PayrollHomepage.currentUser - 10001].getHourlyRate());
+		
+		System.out.printf("| %-20s | PHP %57.2f |\n", "Basic Salary", (double) basicSalary);
+		System.out.printf("| %-20s | PHP %57.2f |\n", "Daily Rate", hourlyRate * 8);
 		System.out.printf("| %-20s | %61.2f |\n", "Days Worked", (double) hours.calculateHoursWorked("10001", "03/01/2024", "03/15/2024") / 8);
 		System.out.printf("| %-20s | %61.61s |\n", "Overtime", "0");
-		System.out.printf("| %-20s | PHP %57.2f |\n", "GROSS INCOME", Float.parseFloat(payslip[0].getGrossSalary()));
+		System.out.printf("| %-20s | PHP %57.2f |\n", "GROSS INCOME", daysWorked * (hourlyRate * 8));
 		System.out.println("----------------------------------------------------------------------------------------");
 		System.out.println("|  BENEFITS                                                                            |");
 		System.out.println("----------------------------------------------------------------------------------------");
-		System.out.printf("| %-20s | PHP %57.2f |\n", "Rice Subsidy", Float.parseFloat(employee[0].getRiceSubsidy()));
-		System.out.printf("| %-20s | PHP %57.2f |\n", "Phone Allowance", Float.parseFloat(employee[0].getPhoneAllowance()));
-		System.out.printf("| %-20s | PHP %57.2f |\n", "Clothing Allowance", Float.parseFloat(employee[0].getClothingAllowance()));
-		System.out.printf("| %-20s | PHP %57.2f |\n", "TOTAL BENEFITS", 3500.0f);
+		
+		float rice = Float.parseFloat(employee[PayrollHomepage.currentUser - 10001].getRiceSubsidy());
+		float phone = Float.parseFloat(employee[PayrollHomepage.currentUser - 10001].getPhoneAllowance());
+		float clothing = Float.parseFloat(employee[PayrollHomepage.currentUser - 10001].getClothingAllowance());
+		
+		System.out.printf("| %-20s | PHP %57.2f |\n", "Rice Subsidy", rice);
+		System.out.printf("| %-20s | PHP %57.2f |\n", "Phone Allowance", phone);
+		System.out.printf("| %-20s | PHP %57.2f |\n", "Clothing Allowance", clothing);
+		System.out.printf("| %-20s | PHP %57.2f |\n", "TOTAL BENEFITS", rice + phone + clothing);
 		System.out.println("----------------------------------------------------------------------------------------");
 		System.out.println("|  DEDUCTIONS                                                                          |");
 		System.out.println("----------------------------------------------------------------------------------------");
-		System.out.printf("| %-20s | PHP %57.2f |\n", "SSS", 900.0f);
-		System.out.printf("| %-20s | PHP %57.2f |\n", "PhilHealth", 450.0f);
-		System.out.printf("| %-20s | PHP %57.2f |\n", "Pag-Ibig", 100.0f);
-		System.out.printf("| %-20s | PHP %57.2f |\n", "Withholding Tax", 1500.0f);
-		System.out.printf("| %-20s | PHP %57.2f |\n", "TOTAL DEDUCTIONS", 2950.0f);
-		System.out.println("----------------------------------------------------------------------------------------");
-		System.out.printf("| %-20s | PHP %57.2f |\n", "TAKE HOME PAY", 39906.8f);
-		System.out.println("----------------------------------------------------------------------------------------");
 		
+		double sss = (double) CalculateSSS.SSS(basicSalary);
+		double phic = (double) CalculatePhilHealth.PhilHealth(basicSalary);
+		double hdmf = (double) CalculatePagIbig.PagIbig(basicSalary);
+		double tin = (double) CalculateWithholdingTax.WithholdingTax(basicSalary, sss, phic, hdmf);
+		double total = sss + phic + hdmf + tin;
+		
+		System.out.printf("| %-20s | PHP %57.2f |\n", "SSS", sss);
+		System.out.printf("| %-20s | PHP %57.2f |\n", "PhilHealth", phic);
+		System.out.printf("| %-20s | PHP %57.2f |\n", "Pag-Ibig", hdmf);
+		System.out.printf("| %-20s | PHP %57.2f |\n", "Withholding Tax", tin);
+		System.out.printf("| %-20s | PHP %57.2f |\n", "TOTAL DEDUCTIONS", total);
+		System.out.println("----------------------------------------------------------------------------------------");
+		System.out.printf("| %-20s | PHP %57.2f |\n", "TAKE HOME PAY", (daysWorked * (hourlyRate * 8)) - total);
+		System.out.println("----------------------------------------------------------------------------------------");
+		scan.nextLine();
+		System.out.println("\nPRESS ENTER TO EXIT >>");
+		scan.nextLine();
+		PayrollHomepage home = new PayrollHomepage();
+		home.displayHomepage();
 	}
 	
 }
