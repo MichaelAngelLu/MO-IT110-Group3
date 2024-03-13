@@ -42,7 +42,7 @@ public void AccessOvertime(){
 		System.out.println("<3> Back");		
 		
 		//Prompt user how to response/interact with system
-		System.out.println("\nEnter selection:");
+		System.out.print("\nEnter selection: ");
 		allowInput();
    }
 
@@ -54,18 +54,15 @@ public void AccessOvertime(){
 
    public void redirectUser(String i) {
 		switch(i) {
-                case "1":
-			System.out.println("You chose: " + i);
+        case "1":
 			CheckPendingOvertime();
 			break;
 		case "2":
-			System.out.println("You chose: " + i);
-                        ApplyOvertime();
+            ApplyOvertime();
 			break;
 		case "3":
-			System.out.println("You chose: " + i);
-                        PayrollHomepage homepage = new PayrollHomepage();
-                        homepage.displayHomepage();
+            PayrollHomepage homepage = new PayrollHomepage();
+            homepage.displayHomepage();
 			break;
 
                }
@@ -73,17 +70,72 @@ public void AccessOvertime(){
 
    public void CheckPendingOvertime(){
        System.out.println("Check Pending Overtime");
+       
+       		//Initialize overtime details
+     		readOvertimeCsv();
+     		//Initialize employee details
+     		readEmployeeCsv();
+     		
+     		//Check if there is data in the storage. Proceed to print if there are
+     		boolean hasRecord = false;
+ 			for (OvertimeRequestDetails requests : otDetails) {
+ 				if (requests != null && requests.getEmployeeID().equals(String.valueOf(PayrollHomepage.currentUser))) {
+ 					if (requests.getApprovalStatus().equals("Pending")) {
+ 						hasRecord = true;
+ 					}
+ 				}
+ 			}
+     		
+     		if (hasRecord) {
+     			//Print details to console
+     			System.out.println(
+     					"----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+     			System.out.printf(
+     					"| %-8s | %-11s | %-25s | %-10s | %-10s | %-10s | %-12s | %-25s | %-10s | %-13s | %-10s |\n",
+     					"OT ID", "Employee ID", "Employee Name", "OT Date", "Start Time", "End Time", "Duration", "Reason",
+     					"Status", "Date Approved", "Approver");
+     			System.out.println(
+     					"----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+     			for (int i = 0; i < otDetails.length; i++) {
+     				if (otDetails[i] != null) {
+     					if (!otDetails[i].getOvertimeID().equals("null")) {
+     						if (otDetails[i].getOvertimeID().equals("Overtime ID")) {
+     							//Skip csv header
+     							continue;
+     						}
+     						int index = Integer.parseInt(otDetails[i].getEmployeeID()) - 10001;
+
+     						if (otDetails[i].getEmployeeID().equals(String.valueOf(PayrollHomepage.currentUser))) {
+								System.out.printf(
+										"| %-8.8s | %-11.11s | %-25.25s | %-10.10s | %-10.10s | %-10.10s | %-12.12s | %-25.25s | %-10.10s | %-13.13s | %-10.10s |\n",
+										otDetails[i].getOvertimeID(), otDetails[i].getEmployeeID(),
+										employee[index].getFullName(), otDetails[i].getOtDate(),
+										otDetails[i].getOtStart(), otDetails[i].getOtEnd(), otDetails[i].getDuration(),
+										otDetails[i].getReason(), otDetails[i].getApprovalStatus(),
+										otDetails[i].getApprovedDate(), otDetails[i].getApprover());
+							}
+     					}
+     				}
+     			}
+     			System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+     		} else {
+     			System.out.println("\n!! No Pending Requests !!");
+     		}
+     				System.out.println("\nPRESS ENTER TO EXIT >>");
+     				scan.nextLine();
+       
        AccessOvertime();
    }
 
    public void ApplyOvertime() {
+	   readOvertimeCsv();
 	    try (CSVWriter writer = new CSVWriter(new FileWriter(CSV_FILE, true))) {
 	        System.out.println("Apply Overtime");
 
 	        System.out.print("Write reason for overtime: ");
-	        String reason = scan.next();
+	        scan.nextLine(); // Consume the newline character
+	        String reason = scan.nextLine();
 	        System.out.print("Write Overtime Date (YYYY-MM-DD): ");
-	        scan.next();
 	        String overtimeDate = scan.next();
 	        System.out.print("Write Start Time (HH:MM): ");
 	        String overtimeStartTime = scan.next();
@@ -175,23 +227,27 @@ public void AccessOvertime(){
 	    String lastID = "00000000";
 
 	    for (OvertimeRequestDetails details : otDetails) {
-	    	//Ignore empty records
-	    	if (details == null) {
-	    		continue;
-	    	}
-	    	//Ignore csv header
-	    	if (details.getOvertimeID().equals("Overtime ID")) {
-	    		continue;
-	    	}
-	    	//Find last application ID
+	        // Ignore empty records
+	        if (details == null) {
+	            continue;
+	        }
+	        // Ignore csv header
+	        if (details.getOvertimeID().equals("Overtime ID")) {
+	            continue;
+	        }
+	        // Find last application ID
 	        String currentID = details.getOvertimeID();
 	        if (currentID.compareTo(lastID) > 0) {
 	            lastID = currentID;
 	        }
 	    }
 
-	    return lastID;
+	    // Increment the last ID
+	    int incrementedID = Integer.parseInt(lastID) + 1;
+	    String formattedID = String.format("%08d", incrementedID); // Add leading zeros
+	    return formattedID;
 	}
+
    
    private String calculateDuration(LocalTime overtimeStartTime, LocalTime overtimeEndTime) {			
 	    long hours = overtimeStartTime.until(overtimeEndTime, ChronoUnit.HOURS);
