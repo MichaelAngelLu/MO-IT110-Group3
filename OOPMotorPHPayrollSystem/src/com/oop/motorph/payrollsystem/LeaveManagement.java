@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import com.opencsv.CSVReader;
 
-public class LeaveManagement {
+public class LeaveManagement extends Employee {
 	
 	protected LeaveRequestDetails[] leaves = new LeaveRequestDetails[100];
 	private String path = "csv/LeaveRequests.csv", line = "";
@@ -58,6 +58,9 @@ public class LeaveManagement {
 			}
 		}
 		System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------");
+		System.out.println("\nPRESS ENTER TO EXIT >>");
+		scan.nextLine();
+		displayRequestMenu();
 	}
 	
 }

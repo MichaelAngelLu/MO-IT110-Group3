@@ -71,7 +71,7 @@ public class Employee {
 		try {
 	        for (int i = 0; i < employee.length; i++) {
 	            if (employee[i] != null && employee[i].getEmployeeID() != null) {
-	                System.out.printf("| %-5s | %-25s | %-15s | %-15s | %-11s | %-8s |\n", employee[i].getEmployeeID(), employee[i].getFullName(),
+	                System.out.printf("| %-5.5s | %-25.25s | %-15.15s | %-15.15s | %-11.11s | %-8.8s |\n", employee[i].getEmployeeID(), employee[i].getFullName(),
 	                        employee[i].getDepartmentID(), employee[i].getPositionID(), employee[i].getPhoneNumber(), "   " + 0);
 	            } else {
 	                // Handle the case where employee[i] is null
@@ -187,8 +187,9 @@ public class Employee {
 	
 	public void displayRequestMenu() {
 		System.out.print("\nEmployee Requests:\n"
-				+ "<1> Leave Requests\n"
-				+ "<2> Back\n\n"
+				+ "<1> Leave Requests\n" 
+				+ "<2> Overtime Requests\n"
+				+ "<3> Back\n\n"
 				+ "Enter selection: ");
 		String i = scan.next();
 		switch (i) {
@@ -197,6 +198,10 @@ public class Employee {
 			leaves.displayLeaveRequests();
 			break;
 		case "2":
+			OvertimeManagement ot = new OvertimeManagement();
+			ot.displayOvertimeRequests();
+			break;
+		case "3":
 			displaySelectionAdmin();
 			break;
 		default:

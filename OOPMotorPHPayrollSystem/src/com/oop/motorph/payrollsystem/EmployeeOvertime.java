@@ -27,13 +27,14 @@ import java.time.temporal.ChronoUnit;
 
 public class EmployeeOvertime extends Employee {
    private static final String CSV_FILE = "csv/overtime_application.csv";
-   private OvertimeRequestDetails[] otDetails = new OvertimeRequestDetails[500];
+   protected OvertimeRequestDetails[] otDetails = new OvertimeRequestDetails[500];
    Scanner scan = new Scanner(System.in);
    String dateFormat = "yyyy-MM-dd";
    
-   public void AccessOvertime(){
+public void AccessOvertime(){
 	   //read overtime details csv files
 	   readOvertimeCsv();
+
 		//Homepage menu
 		System.out.println("\nOvertime Menu:");
 		System.out.println("<1> Check Pending Overtime");
@@ -156,11 +157,12 @@ public class EmployeeOvertime extends Employee {
 	        String[] values;
 	        int i = 0;
 	        while ((values = reader.readNext()) != null) {
-
-	            otDetails[i] = new OvertimeRequestDetails(values[0], values[1], values[2], values[3], values[4], values[5],
-	                    values[6], values[7], values[8], values[9]);
-
-	            i++;
+	        	
+	            if (true) {
+					otDetails[i] = new OvertimeRequestDetails(values[0], values[1], values[2], values[3], values[4],
+							values[5], values[6], values[7], values[8], values[9]);
+					i++;
+				}
 	        }
 	    } catch (FileNotFoundException e) {
 	        e.printStackTrace();
